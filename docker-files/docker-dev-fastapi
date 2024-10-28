@@ -1,0 +1,30 @@
+# Dockerfile.dev
+# Use the official Python 3.12 slim image as the base image
+FROM python:3.12-slim  
+
+WORKDIR /app  # Set the working directory inside the container to /app
+
+# Update the package list and install necessary packages
+RUN apt-get update && apt-get install -y \
+    build-essential \ 
+    libpq-dev \ 
+    gcc \  
+    && rm -rf /var/lib/apt/lists/*  
+
+# Copy the requirements.txt file to the working directory
+COPY requirements.txt ./  
+
+# Install the dependencies listed in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt 
+
+# Install uvicorn and watchdog for live reloading
+RUN pip install --no-cache-dir uvicorn[standard] watchdog  
+
+# Expose port 5000
+EXPOSE 5000  
+
+# Copy the .env file to the working directory
+COPY .env .  
+
+# Start the FastAPI server with uvicorn, enabling live reloading
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000", "--reload"]

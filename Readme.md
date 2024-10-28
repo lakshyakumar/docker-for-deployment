@@ -109,10 +109,24 @@ docker build -t myapp-dev:latest -f Dockerfile.dev .
 docker run -p 3000:3000 -v $(pwd):/app -v /app/node_modules myapp-dev nodemon -L index.js
 ```
 
+## Other Images and docker commands
+
+1. Docker file for FastAPI  
+   `docker-dev-fastapi`, find the file in `docker-files` folder and run it with the below command
+
+```bash
+docker build -t dev-cotainer -f docker-dev-fastapi .
+docker run -p 5000:5000 -v .:/app dev-container
+```
+
+> **Note:** Make sure you have an `.env` file for dev container or pass env variables through `-e` flag in docker run command.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
+
+Create a new docker file in `docker-files` folder (e.g., `docker-dev-flask`, `docker-dev-next`, etc.).
 
 Please make sure to update tests as appropriate.
 
